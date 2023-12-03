@@ -20,6 +20,7 @@ public class ContactBookApplication {
     @Bean
     public CommandLineRunner commandLineRunner(AuthenticationService service) {
         return args -> {
+            if (!service.userExists("Admin")) {
                 var admin = RegisterRequest.builder()
                         .username("Admin")
                         .phone("+995579050577")
@@ -27,7 +28,11 @@ public class ContactBookApplication {
                         .role(ADMIN)
                         .build();
                 System.out.println("Admin token: " + service.register(admin).getAccessToken());
+            } else {
+                System.out.println("Admin already exists");
+            }
 
+            if (!service.userExists("Manager")) {
                 var manager = RegisterRequest.builder()
                         .username("Manager")
                         .phone("+995596323377")
@@ -35,7 +40,11 @@ public class ContactBookApplication {
                         .role(MANAGER)
                         .build();
                 System.out.println("Manager token: " + service.register(manager).getAccessToken());
+            } else {
+                System.out.println("Manager already exists");
+            }
         };
     }
+
 
 }
